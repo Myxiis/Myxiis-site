@@ -1,0 +1,7 @@
+# Local Claude Code / preview tooling (not part of the site)
+.claude/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
