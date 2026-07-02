@@ -254,7 +254,9 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border);
-      background: radial-gradient(120% 120% at 50% 0%, #1c1c22 0%, #101013 55%, #0b0b0d 100%);
+      background:
+        linear-gradient(rgba(13, 13, 15, 0.5), rgba(13, 13, 15, 0.62)),
+        url("bg-texture.jpg") center / cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -262,7 +264,7 @@
     .visual-frame::after {
       content: "";
       position: absolute; inset: 0;
-      background: radial-gradient(58% 58% at 50% 45%, rgba(107,140,207,0.12), transparent 70%);
+      background: radial-gradient(78% 78% at 50% 48%, transparent 36%, rgba(10, 10, 12, 0.62) 100%);
       pointer-events: none;
     }
     .visual-logo { width: clamp(180px, 27vw, 280px); height: clamp(180px, 27vw, 280px); position: relative; z-index: 1; }
@@ -299,6 +301,8 @@
       position: absolute; left: 22px; bottom: 20px;
       font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
     }
+    .media-ph--design { background: url("feature-design.png") center / cover no-repeat; }
+    .media-ph--perf { background: url("feature-performance.jpg") center / cover no-repeat; }
 
     /* ---------- Services ---------- */
     .services { padding: var(--section-pad) 0; }
@@ -311,9 +315,9 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg-card);
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0), 0 4px 10px rgba(0,0,0,0), inset 0 1px 0 rgba(255,255,255,0);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
-    .service:hover { transform: translateY(-4px); border-color: var(--border-hover); background: #16161b; }
     .service-icon {
       width: 44px; height: 44px;
       display: flex; align-items: center; justify-content: center;
@@ -331,20 +335,21 @@
     .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
     .work-card {
+      display: block;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       background: var(--bg-card);
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0), 0 4px 10px rgba(0,0,0,0), inset 0 1px 0 rgba(255,255,255,0);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
-    .work-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
     .work-thumb {
       aspect-ratio: 3 / 2;
       background: radial-gradient(120% 120% at 30% 20%, #1d1d24 0%, #111114 60%, #0c0c0e 100%);
       position: relative;
       border-bottom: 1px solid var(--border);
     }
-    .work-card--soon .work-thumb { background: repeating-linear-gradient(135deg, #141418 0 12px, #111114 12px 24px); }
+    .work-card--soon .work-thumb { background: #fff url("loading-2.gif") center center / 200px auto no-repeat; }
     .work-body { padding: 22px 24px 26px; }
     .work-body .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
     .work-body h3 { font-family: var(--sans); font-size: 1.12rem; font-weight: 600; }
@@ -353,6 +358,29 @@
     .tag { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
     .tag-live { color: var(--accent); border: 1px solid var(--border-hover); background: var(--accent-soft); }
     .tag-soon { color: var(--text-faint); border: 1px solid var(--border); }
+
+    /* 909pros card visual — screenshot with a gradient fallback if the file is missing */
+    .work-thumb--909pros {
+      background:
+        url("909pros.png") center top / cover no-repeat,
+        radial-gradient(120% 120% at 30% 20%, #1d1d24 0%, #111114 60%, #0c0c0e 100%);
+    }
+
+    /* ---------- 3D lift on hover — pointer devices only (no lift on touch) ---------- */
+    @media (hover: hover) and (pointer: fine) {
+      .service:hover, .work-card:hover {
+        transform: translateY(-6px);
+        background: #17171d;
+        border-color: rgba(107, 140, 207, 0.5);
+        box-shadow:
+          0 12px 30px rgba(0, 0, 0, 0.45),
+          0 4px 10px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .service:hover, .work-card:hover { transform: none; }
+    }
 
     /* ---------- Process ---------- */
     .process { padding: var(--section-pad) 0; }
@@ -433,6 +461,12 @@
     .js .reveal.is-visible { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) {
       .js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+    /* Cards are reveal targets too — keep hover transitions snappy (0.25s) while still
+       fading in via opacity. Placed after .js .reveal so it wins the specificity tie. */
+    .js .service, .js .work-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease,
+                  background 0.25s ease, opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* ---------- Responsive ---------- */
@@ -542,7 +576,7 @@
           <p>No templates, no clutter — just a clean, custom site that makes the next step obvious: getting in touch with you.</p>
         </div>
         <div class="feature-media reveal">
-          <div class="media-ph" data-label="Custom design"></div>
+          <div class="media-ph media-ph--design"></div>
         </div>
       </div>
     </section>
@@ -557,7 +591,7 @@
           <p>Clear calls to action and simple forms turn that attention into real enquiries, landing straight in your inbox.</p>
         </div>
         <div class="feature-media reveal">
-          <div class="media-ph" data-label="Fast, responsive"></div>
+          <div class="media-ph media-ph--perf"></div>
         </div>
       </div>
     </section>
@@ -634,16 +668,16 @@
         </div>
         <div class="work-grid">
 
-          <article class="work-card reveal">
-            <div class="work-thumb"></div>
+          <a class="work-card reveal" href="https://909pros.com/" target="_blank" rel="noopener noreferrer">
+            <div class="work-thumb work-thumb--909pros"></div>
             <div class="work-body">
               <div class="row">
                 <h3>909pros</h3>
                 <span class="tag tag-live">Live</span>
               </div>
-              <p>A home-services directory connecting Inland Empire homeowners with trusted local pros — from contractors to cleaners.</p>
+              <p>An Inland Empire home-services directory I built.</p>
             </div>
-          </article>
+          </a>
 
           <article class="work-card work-card--soon reveal">
             <div class="work-thumb"></div>
@@ -709,8 +743,8 @@
           <p>Prefer email? <a class="email" href="mailto:mattheubenny@outlook.com">mattheubenny@outlook.com</a></p>
         </div>
 
-        <!-- Replace the action URL with your Formspree endpoint, e.g. https://formspree.io/f/abcdwxyz -->
-        <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <!-- Submits via EmailJS (same delivery as the chatbot) — handled by the script below. -->
+        <form class="contact-form reveal" id="contact-form">
           <div class="field">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Your name" required />
@@ -834,6 +868,88 @@
       reveals.forEach(function (el) { io.observe(el); });
     })();
   </script>
+
+  <!-- Contact form → EmailJS (same delivery method as the chatbot). The public key is safe to expose client-side. -->
+  <script>
+    (function () {
+      var form = document.getElementById('contact-form');
+      if (!form) return;
+      var EJS = { publicKey: 'ec53tUwT3fEbWvrT1', serviceId: 'service_5qrv4kt', templateId: 'template_ccfadke' };
+      var OWNER = 'mattheubenny@outlook.com';
+
+      function ensureEmailJS() {
+        if (window.emailjs && window.emailjs.__myxReady) return Promise.resolve();
+        return new Promise(function (resolve, reject) {
+          function init() {
+            try { window.emailjs.init({ publicKey: EJS.publicKey }); window.emailjs.__myxReady = true; resolve(); }
+            catch (e) { reject(e); }
+          }
+          if (window.emailjs) { init(); return; }
+          var s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+          s.onload = init;
+          s.onerror = function () { reject(new Error('Failed to load EmailJS SDK')); };
+          document.head.appendChild(s);
+        });
+      }
+
+      var btn = form.querySelector('button[type="submit"]');
+      var status = document.createElement('p');
+      status.setAttribute('role', 'status');
+      status.style.cssText = 'margin-top:14px;font-size:0.95rem;line-height:1.5;min-height:1.2em;color:var(--text-dim);';
+      form.appendChild(status);
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('name').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var message = document.getElementById('message').value.trim();
+        if (!name || !email || !message) return;
+
+        var original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        status.style.color = 'var(--text-dim)';
+        status.textContent = '';
+
+        var now = new Date().toLocaleString();
+        var params = {
+          subject: 'New enquiry from ' + name + ' — Myxiis contact form',
+          name: name,
+          email: email,
+          reply_to: email,
+          contact: email,
+          service: 'Contact form',
+          project: '—',
+          job: message,
+          details: message,
+          timeline: '—',
+          timestamp: now,
+          time: now,
+          message: 'Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message
+        };
+
+        ensureEmailJS()
+          .then(function () { return window.emailjs.send(EJS.serviceId, EJS.templateId, params); })
+          .then(function () {
+            form.reset();
+            btn.textContent = 'Sent ✓';
+            status.style.color = 'var(--accent)';
+            status.textContent = "Thanks — your message is on its way. I'll get back to you shortly.";
+          })
+          .catch(function (err) {
+            console.error('[Myxiis] Contact form send failed:', err);
+            btn.disabled = false;
+            btn.textContent = original;
+            status.style.color = '#e59090';
+            status.textContent = 'Sorry, something went wrong. Please email ' + OWNER + ' directly.';
+          });
+      });
+    })();
+  </script>
+
+  <!-- Lead-capture chatbot widget -->
+  <script src="chatbot-widget.js" defer></script>
 
 </body>
 </html>
