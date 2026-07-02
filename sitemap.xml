@@ -19,6 +19,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://myxiis.com/#about</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://myxiis.com/#contact</loc>
     <priority>0.8</priority>
   </url>
