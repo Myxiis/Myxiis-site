@@ -330,6 +330,42 @@
     .service h3 { font-family: var(--sans); font-size: 1.06rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
     .service p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.55; }
 
+    /* ---------- Pricing ---------- */
+    .pricing { padding: var(--section-pad) 0; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .pricing-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: 0 12px 30px rgba(0,0,0,0), 0 4px 10px rgba(0,0,0,0), inset 0 1px 0 rgba(255,255,255,0);
+    }
+    .pricing-card--featured { border-color: rgba(107, 140, 207, 0.5); }
+    .pricing-badge {
+      position: absolute; top: -11px; left: 28px;
+      background: var(--accent); color: #0d0d0f;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 999px;
+    }
+    .pricing-name { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 14px; }
+    .pricing-price { font-family: var(--serif); font-size: 2.5rem; line-height: 1; color: var(--text); }
+    .pricing-price span { font-family: var(--sans); font-size: 0.85rem; color: var(--text-faint); font-weight: 400; letter-spacing: 0.04em; }
+    .pricing-mo { color: var(--text-dim); font-size: 0.95rem; margin-top: 8px; }
+    .pricing-desc { color: var(--text-dim); font-size: 0.95rem; line-height: 1.5; margin-top: 16px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin: 22px 0 28px; }
+    .pricing-features li { position: relative; padding-left: 26px; color: var(--text-dim); font-size: 0.94rem; line-height: 1.4; }
+    .pricing-features li::before {
+      content: ""; position: absolute; left: 2px; top: 5px;
+      width: 11px; height: 6px;
+      border-left: 1.7px solid var(--accent); border-bottom: 1.7px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+    .pricing-btn { margin-top: auto; width: 100%; }
+    .pricing-note { text-align: center; color: var(--text-faint); font-size: 0.9rem; margin-top: clamp(28px, 4vw, 40px); }
+
     /* ---------- Work ---------- */
     .work { padding: var(--section-pad) 0; }
     .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -368,7 +404,7 @@
 
     /* ---------- 3D lift on hover — pointer devices only (no lift on touch) ---------- */
     @media (hover: hover) and (pointer: fine) {
-      .service:hover, .work-card:hover {
+      .service:hover, .work-card:hover, .pricing-card:hover {
         transform: translateY(-6px);
         background: #17171d;
         border-color: rgba(107, 140, 207, 0.5);
@@ -379,7 +415,7 @@
       }
     }
     @media (prefers-reduced-motion: reduce) {
-      .service:hover, .work-card:hover { transform: none; }
+      .service:hover, .work-card:hover, .pricing-card:hover { transform: none; }
     }
 
     /* ---------- Process ---------- */
@@ -471,7 +507,7 @@
     }
     /* Cards are reveal targets too — keep hover transitions snappy (0.25s) while still
        fading in via opacity. Placed after .js .reveal so it wins the specificity tie. */
-    .js .service, .js .work-card {
+    .js .service, .js .work-card, .js .pricing-card {
       transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease,
                   background 0.25s ease, opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -479,6 +515,7 @@
     /* ---------- Responsive ---------- */
     @media (max-width: 900px) {
       .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
       .footer-top { grid-template-columns: 1fr 1fr; }
       .footer-brand { grid-column: 1 / -1; }
     }
@@ -515,6 +552,7 @@
         <div class="nav-links">
           <a href="#work">Work</a>
           <a href="#services">Services</a>
+          <a href="#pricing">Pricing</a>
           <a href="#process">Process</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
@@ -529,6 +567,7 @@
       <div class="container">
         <a href="#work">Work</a>
         <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
         <a href="#process">Process</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
@@ -664,6 +703,68 @@
           </div>
 
         </div>
+      </div>
+    </section>
+
+    <!-- ===== Pricing ===== -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Pricing</span>
+          <h2>Simple, honest pricing.</h2>
+          <p>Clear packages with no surprises — pick what fits, and scale up when you're ready.</p>
+        </div>
+        <div class="pricing-grid">
+
+          <div class="pricing-card reveal">
+            <h3 class="pricing-name">Starter</h3>
+            <div class="pricing-price">$500 <span>setup</span></div>
+            <div class="pricing-mo">+ $50/mo</div>
+            <p class="pricing-desc">Perfect for getting online fast.</p>
+            <ul class="pricing-features">
+              <li>One-page website</li>
+              <li>Mobile-friendly</li>
+              <li>Contact form</li>
+              <li>Hosting &amp; SSL included</li>
+              <li>Launched on your domain</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline pricing-btn">Get started</a>
+          </div>
+
+          <div class="pricing-card pricing-card--featured reveal">
+            <span class="pricing-badge">Most popular</span>
+            <h3 class="pricing-name">Standard</h3>
+            <div class="pricing-price">$1,000 <span>setup</span></div>
+            <div class="pricing-mo">+ $75/mo</div>
+            <p class="pricing-desc">The complete package for growing businesses.</p>
+            <ul class="pricing-features">
+              <li>Multi-page website</li>
+              <li>Mobile-first design</li>
+              <li>Booking &amp; contact forms</li>
+              <li>SEO-ready build</li>
+              <li>Hosting &amp; maintenance</li>
+              <li>Ongoing small edits</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary pricing-btn">Get started</a>
+          </div>
+
+          <div class="pricing-card reveal">
+            <h3 class="pricing-name">Premium</h3>
+            <div class="pricing-price">$2,000 <span>setup</span></div>
+            <div class="pricing-mo">+ $150/mo</div>
+            <p class="pricing-desc">Everything, fully managed.</p>
+            <ul class="pricing-features">
+              <li>Everything in Standard</li>
+              <li>Custom design &amp; animations</li>
+              <li>Priority support</li>
+              <li>Ongoing content &amp; updates</li>
+              <li>Performance optimization</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline pricing-btn">Get started</a>
+          </div>
+
+        </div>
+        <p class="pricing-note reveal">Every project starts with a free mockup — no commitment. 50% deposit to begin.</p>
       </div>
     </section>
 
@@ -865,7 +966,7 @@
       if (!reveals.length) return;
 
       // Stagger grouped children — set delays up front (before reveal, so no flash)
-      ['.hero .container', '.services-grid', '.work-grid', '.process-grid', '.footer-top']
+      ['.hero .container', '.services-grid', '.pricing-grid', '.work-grid', '.process-grid', '.footer-top']
         .forEach(function (sel) {
           var container = document.querySelector(sel);
           if (!container) return;
